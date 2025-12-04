@@ -1,18 +1,3 @@
-# Small Projects
-
-A collection of small, focused Python projects designed for learning, experimentation, and practical utility.
-Each project is cleanly organized, documented, and written using modern Python practices.
-
-Currently included:
-
-* **search-file-project** – A command-line tool that searches for files above a specified size using three different implementations (recursive, `os.walk`, and `pathlib`).
-
-More projects will be added over time.
-
----
-
-## 📁 Project List
-
 ### 1. **search-file-project**
 
 A tool that scans directories and reports files larger than a given size.
@@ -84,24 +69,6 @@ This repository serves as:
 
 ---
 
-## 🧩 Future Additions
-
-Potential upcoming small projects:
-
-* Text processing tools
-* Data cleaning utilities
-* Simple web scrapers
-* Tkinter mini-apps
-* Algorithm demonstrations
-
----
-
-## 📝 License
-
-This project is licensed under the **MIT License**.
-Feel free to use and modify the code for personal or commercial purposes.
-
----
 
 ## 🤝 Contributions
 
