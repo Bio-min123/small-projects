@@ -1,118 +1,62 @@
 # Small Projects
 
-A collection of small, focused Python projects designed for learning, experimentation, and practical utility.
-Each project is cleanly organized, documented, and written using modern Python practices.
-
-Currently included:
-
-* **search-file-project** – A command-line tool that searches for files above a specified size using three different implementations (recursive, `os.walk`, and `pathlib`).
-
-More projects will be added over time.
+A curated collection of small, self-contained Python projects designed for learning, experimentation, and practice. Each project focuses on a specific programming task such as file processing, search utilities, automation, or data handling.
 
 ---
 
-## 📁 Project List
+Each subfolder contains one independent project and includes:
 
-### 1. **search-file-project**
+* Python source code
+* A project-specific README
+* Example usage (when applicable)
 
-A tool that scans directories and reports files larger than a given size.
-Includes **three implementations** to demonstrate different techniques in Python:
+---
 
-| Method    | Description                                         |
-| --------- | --------------------------------------------------- |
-| Recursive | Manual recursion using `os.listdir`                 |
-| Iterative | Directory walking using `os.walk`                   |
-| Pathlib   | Cleaner object-oriented approach using `Path.rglob` |
+## 🔍 Featured Project: `search-file-project`
 
-#### ⭐ Features
+A recursive file-searching utility that scans directories, filters files by minimum size, and collects results.
 
-* Search using multiple algorithms
-* Verbose and non-verbose output
-* CLI interface using `argparse`
-* Handles permission errors safely
-* Cross-platform (Windows/macOS/Linux)
+### Functions
 
-#### 🔧 Usage
+* **`search_recursive(path: str, min_size: int, found_files: Dict[str, int] | None) -> Dict[str, int]`**
 
-Navigate to:
+  * Walks through directories
+  * Checks file sizes
+  * Returns a dictionary of matched files and their sizes
 
-```
-small-projects/search-file-project
-```
+### Example usage
 
-Run:
-
-```
-python searchfile.py <path> <min_size_MB> [--method recursive|iterative|pathlib|all] [-v]
-```
-
-Examples:
-
-```
-python searchfile.py "C:\Users" 10
-python searchfile.py "/home/user" 5 --method pathlib -v
-python searchfile.py . 1 --method all
+```bash
+python searchfile.py --path "/some/folder" --min-size 5000
 ```
 
 ---
 
-## 📚 Repository Structure
+## 🛠 Requirements
 
+* Python 3.10+
+* Standard Library only (no external dependencies yet)
+
+---
+
+## 🚀 Usage
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Bio-min123/small-projects.git
+cd small-projects
 ```
-small-projects/
-│
-├── search-file-project/
-│   ├── README.md
-│   ├── src/ (optional future structure)
-│   └── searchfile.py
-│
-├── README.md
-├── LICENSE
-└── .gitignore
-```
+
+Navigate to any project and run the demo script.
 
 ---
 
-## 🔍 Goals of This Repository
+## 📘 Roadmap
 
-This repository serves as:
-
-* A practice ground for writing **clean, maintainable Python**
-* A showcase of **different implementation approaches** to the same problem
-* A personal learning portfolio hosted on GitHub
-* A foundation for future small projects (data processing, algorithms, tools, etc.)
+* Add more small projects
+* Improve documentation consistency
+* Publish examples and screenshots
 
 ---
 
-## 🧩 Future Additions
-
-Potential upcoming small projects:
-
-* Text processing tools
-* Data cleaning utilities
-* Simple web scrapers
-* Tkinter mini-apps
-* Algorithm demonstrations
-
----
-
-## 📝 License
-
-This project is licensed under the **MIT License**.
-Feel free to use and modify the code for personal or commercial purposes.
-
----
-
-## 🤝 Contributions
-
-This repository is primarily for personal learning, but contributions, suggestions, and improvements are always welcome.
-Feel free to open issues or submit pull requests.
-
----
-
-## ⭐ Support
-
-If you find these projects useful, please consider starring the repo!
-It helps others find the project and motivates further development.
-
----
