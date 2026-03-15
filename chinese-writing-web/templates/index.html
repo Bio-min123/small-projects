@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Chinese Character Explorer</title>
+
+<!-- Load the HanziWriter library from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@2.1/dist/hanzi-writer.min.js"></script>
+
+<style>
+
+/* Page styling */
+body{
+    font-family:Arial;
+    text-align:center;
+    margin-top:40px;
+}
+
+/* Main character display area */
+#character-target{
+    width:300px;
+    height:300px;
+    margin:auto;
+}
+
+/* Button styling */
+button{
+    margin:5px;
+    padding:8px;
+}
+
+/* Information area (character, pinyin, meaning) */
+.info{
+    margin-top:20px;
+}
+
+/* Control buttons section */
+.controls{
+    margin-top:10px;
+}
+
+/* Container that holds the stroke-order mini diagrams */
+#stroke-list{
+    display:flex;
+    flex-wrap:wrap;      /* allow wrapping to new row */
+    justify-content:center;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Chinese Character Explorer</h1>
+
+<!-- Form to submit a Chinese character -->
+<form method="POST">
+
+<input type="text" name="character" placeholder="Enter character">
+
+<button type="submit">Search</button>
+
+</form>
+
+
+<!-- Background grid used for writing practice -->
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" id="grid-background-target">
+  <!-- diagonal lines -->
+  <line x1="0" y1="0" x2="300" y2="300" stroke="#DDD" />
+  <line x1="300" y1="0" x2="0" y2="300" stroke="#DDD" />
+
+  <!-- vertical center line -->
+  <line x1="150" y1="0" x2="150" y2="300" stroke="#DDD" />
+
+  <!-- horizontal center line -->
+  <line x1="0" y1="150" x2="300" y2="150" stroke="#DDD" />
+</svg>
+
+<!-- Area where small stroke-order diagrams will appear -->
+<div id="stroke-list"></div>
+
+<div class="controls">
+
+<!-- Button to start writing practice -->
+<button onclick="practice()">Practice Writing</button>
+
+</div>
+
+<div class="info">
+
+<!-- These values are inserted by your backend (Flask/Jinja etc.) -->
+<p><b>Character:</b> {{ character }}</p>
+<p><b>Pinyin:</b> {{ pinyin }}</p>
+<p><b>Meaning:</b> {{ meaning }}</p>
+
+</div>
+
+
+<script>
+
+/* Character value passed from backend */
+var character = "{{ character }}";
+
+/* HanziWriter object */
+var writer;
+
+
+/* ---------------------------------------------------
+   Function: renderFanningStrokes
+   Purpose: draw small diagrams showing stroke order
+--------------------------------------------------- */
+
+function renderFanningStrokes(target, strokes) {
+
+  /* create a small SVG container */
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  svg.style.width = '75px';
+  svg.style.height = '75px';
+  svg.style.border = '1px solid #EEE';
+  svg.style.margin = '3px';
+
+  /* add SVG to target container */
+  target.appendChild(svg);
+
+  /* create group element to hold strokes */
+  var group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+  /* scale the character to fit the small SVG */
+  var transformData = HanziWriter.getScalingTransform(75,75);
+
+  group.setAttributeNS(null,'transform',transformData.transform);
+
+  svg.appendChild(group);
+
+  /* draw each stroke */
+  strokes.forEach(function(strokePath){
+
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+
+    /* stroke path data */
+    path.setAttributeNS(null,'d',strokePath);
+
+    /* color of stroke */
+    path.style.fill = '#555';
+
+    group.appendChild(path);
+
+  });
+
+}
+
+
+/* ---------------------------------------------------
+   Create the main character animation
+--------------------------------------------------- */
+
+if(character){
+
+    /* create HanziWriter instance */
+    writer = HanziWriter.create('grid-background-target', character, {
+
+        width:300,
+        height:300,
+        padding:5,
+
+        showOutline:true,     // show grey outline of character
+
+        strokeColor:"#000",   // stroke color
+        radicalColor:"#168F16", // radical highlight color
+        highlightColor:"#FF0000" // animation highlight color
+
+    });
+
+    /* continuously animate the character */
+    writer.loopCharacterAnimation();
+
+    /* ---------------------------------------------------
+       Load stroke data for stroke-order diagrams
+    --------------------------------------------------- */
+
+    HanziWriter.loadCharacterData(character).then(function(charData) {
+
+        /* array containing all stroke paths */
+        var strokes = charData.strokes;
+
+        /* stroke-list container */
+        var target = document.getElementById('stroke-list');
+
+        /* clear previous character strokes */
+        target.innerHTML = "";
+
+        /* create progressive stroke diagrams */
+        for (var i = 0; i < strokes.length; i++) {
+
+            /* get strokes from 0 → current stroke */
+            var portion = strokes.slice(0, i + 1);
+
+            /* draw mini diagram */
+            renderFanningStrokes(target, portion);
+
+        }
+
+    });
+
+}
+
+
+/* ---------------------------------------------------
+   Writing practice mode
+--------------------------------------------------- */
+
+function practice(){
+
+    if(writer){
+
+        /* start interactive writing quiz */
+        writer.quiz();
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
